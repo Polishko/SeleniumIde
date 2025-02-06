@@ -1,4 +1,4 @@
-name: Selenium IDE CI
+name: Run UI Tests
 
 on:
   push:
@@ -16,15 +16,10 @@ jobs:
     - name: Checkout the project and install on machine
       uses: actions/checkout@v3
 
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v3
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
-
-    - name: Install Chrome
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
 
     - name: Install dependencies
       run: dotnet restore
@@ -32,10 +27,5 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
-    - name: Run the tests
-      env:
-        CHROMEWEBDRIVER: /usr/lib/chromium-browser/
-      run: dotnet test --verbosity normal
-
-      
-
+    - name: Run UI tests
+      run: dotnet test --no-build --verbosity normal
